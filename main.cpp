@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <fstream>
 using namespace std;
 
 class Book {
@@ -66,6 +67,7 @@ public:
 
         books.push_back(Book(id, title, author));
         cout << "Book added successfully.\n";
+        saveToFile();
     }
 
     void displayBooks() {
@@ -127,11 +129,21 @@ void deleteBook() {
         if (it->getID() == id) {
             books.erase(it);
             cout << "Book deleted successfully.\n";
+            saveToFile();
             return;
         }
     }
 
     cout << "Book not found.\n";
+}
+void saveToFile() {
+    ofstream file("books.txt");
+
+    for (auto &b : books) {
+        file << b.getID() << endl;
+    }
+
+    file.close();
 }
 };
 
