@@ -118,6 +118,21 @@ void searchBook() {
 
     cout << "Book not found.\n";
 }
+void deleteBook() {
+    int id;
+    cout << "Enter Book ID to delete: ";
+    cin >> id;
+
+    for (auto it = books.begin(); it != books.end(); it++) {
+        if (it->getID() == id) {
+            books.erase(it);
+            cout << "Book deleted successfully.\n";
+            return;
+        }
+    }
+
+    cout << "Book not found.\n";
+}
 };
 
 int main() {
@@ -125,17 +140,17 @@ int main() {
     int choice;
 
     while (true) {
-      cout << "\n--- Library Management System ---\n";
+cout << "\n--- Library Management System ---\n";
 cout << "1. Add Book\n";
 cout << "2. Display Books\n";
 cout << "3. Issue Book\n";
 cout << "4. Return Book\n";
 cout << "5. Search Book\n";
-cout << "6. Exit\n";
+cout << "6. Delete Book\n";
+cout << "7. Exit\n";
 
-        cout << "Enter choice: ";
-        cin >> choice;
-
+cout << "Enter choice: ";
+cin >> choice;
         switch (choice) {
         case 1:
             lib.addBook();
@@ -153,10 +168,13 @@ cout << "6. Exit\n";
             lib.searchBook();
             break;
         case 6:
-            cout<<"Exiting...\n";
-       return 0;
-             default:
-            cout << "Invalid choice\n";
+             lib.deleteBook();
+            break;
+        case 7:
+             cout<<"Exiting...\n";
+            return 0;
+        default:
+             cout << "Invalid choice\n";
         }
     }
 }
