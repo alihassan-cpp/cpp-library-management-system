@@ -12,6 +12,17 @@ private:
     bool issued;
 
 public:
+    string getTitle() {
+        return title;
+    }
+
+    string getAuthor() {
+        return author;
+    }
+
+    bool isIssued() {
+        return issued;
+    }
     Book(int i, string t, string a) {
         id = i;
         title = t;
@@ -35,7 +46,8 @@ public:
         if (!issued) {
             issued = true;
             cout << "Book issued successfully.\n";
-        } else {
+        }
+        else {
             cout << "Book already issued.\n";
         }
     }
@@ -71,7 +83,7 @@ public:
     }
 
     void displayBooks() {
-        for (auto &b : books) {
+        for (auto& b : books) {
             b.display();
         }
     }
@@ -81,7 +93,7 @@ public:
         cout << "Enter Book ID to issue: ";
         cin >> id;
 
-        for (auto &b : books) {
+        for (auto& b : books) {
             if (b.getID() == id) {
                 b.issue();
                 return;
@@ -96,7 +108,7 @@ public:
         cout << "Enter Book ID to return: ";
         cin >> id;
 
-        for (auto &b : books) {
+        for (auto& b : books) {
             if (b.getID() == id) {
                 b.returnBook();
                 return;
@@ -105,64 +117,84 @@ public:
 
         cout << "Book not found.\n";
     }
-void searchBook() {
-    int id;
-    cout << "Enter Book ID to search: ";
-    cin >> id;
+    void searchBook() {
+        int id;
+        cout << "Enter Book ID to search: ";
+        cin >> id;
 
-    for (auto &b : books) {
-        if (b.getID() == id) {
-            cout << "Book Found:\n";
-            b.display();
-            return;
+        for (auto& b : books) {
+            if (b.getID() == id) {
+                cout << "Book Found:\n";
+                b.display();
+                return;
+            }
         }
+
+        cout << "Book not found.\n";
     }
+    void deleteBook() {
+        int id;
+        cout << "Enter Book ID to delete: ";
+        cin >> id;
 
-    cout << "Book not found.\n";
-}
-void deleteBook() {
-    int id;
-    cout << "Enter Book ID to delete: ";
-    cin >> id;
-
-    for (auto it = books.begin(); it != books.end(); it++) {
-        if (it->getID() == id) {
-            books.erase(it);
-            cout << "Book deleted successfully.\n";
-            saveToFile();
-            return;
+        for (auto it = books.begin(); it != books.end(); it++) {
+            if (it->getID() == id) {
+                books.erase(it);
+                cout << "Book deleted successfully.\n";
+                saveToFile();
+                return;
+            }
         }
+
+        cout << "Book not found.\n";
     }
+    void saveToFile() {
+        ofstream file("books.txt");
 
-    cout << "Book not found.\n";
-}
-void saveToFile() {
-    ofstream file("books.txt");
+        for (auto& b : books) {
+            file << b.getID() << " "
+                << b.getTitle() << " "
+                << b.getAuthor() << " "
+                << b.isIssued() << endl;
+        }
 
-    for (auto &b : books) {
-        file << b.getID() << endl;
+        file.close();
     }
+    void loadFromFile() {
+        ifstream file("books.txt");
 
-    file.close();
-}
+        int id;
+        string title, author;
+        bool issued;
+
+        while (file >> id >> title >> author >> issued) {
+            Book b(id, title, author);
+            if (issued)
+                b.issue();
+            books.push_back(b);
+        }
+
+        file.close();
+    }
 };
 
 int main() {
     Library lib;
+    lib.loadFromFile();
     int choice;
 
     while (true) {
-cout << "\n--- Library Management System ---\n";
-cout << "1. Add Book\n";
-cout << "2. Display Books\n";
-cout << "3. Issue Book\n";
-cout << "4. Return Book\n";
-cout << "5. Search Book\n";
-cout << "6. Delete Book\n";
-cout << "7. Exit\n";
+        cout << "\n--- Library Management System ---\n";
+        cout << "1. Add Book\n";
+        cout << "2. Display Books\n";
+        cout << "3. Issue Book\n";
+        cout << "4. Return Book\n";
+        cout << "5. Search Book\n";
+        cout << "6. Delete Book\n";
+        cout << "7. Exit\n";
 
-cout << "Enter choice: ";
-cin >> choice;
+        cout << "Enter choice: ";
+        cin >> choice;
         switch (choice) {
         case 1:
             lib.addBook();
@@ -180,13 +212,13 @@ cin >> choice;
             lib.searchBook();
             break;
         case 6:
-             lib.deleteBook();
+            lib.deleteBook();
             break;
         case 7:
-             cout<<"Exiting...\n";
+            cout << "Exiting...\n";
             return 0;
         default:
-             cout << "Invalid choice\n";
+            cout << "Invalid choice\n";
         }
     }
 }
