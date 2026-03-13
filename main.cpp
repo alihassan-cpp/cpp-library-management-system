@@ -103,6 +103,21 @@ public:
 
         cout << "Book not found.\n";
     }
+void searchBook() {
+    int id;
+    cout << "Enter Book ID to search: ";
+    cin >> id;
+
+    for (auto &b : books) {
+        if (b.getID() == id) {
+            cout << "Book Found:\n";
+            b.display();
+            return;
+        }
+    }
+
+    cout << "Book not found.\n";
+}
 };
 
 int main() {
@@ -110,12 +125,13 @@ int main() {
     int choice;
 
     while (true) {
-        cout << "\n--- Library Management System ---\n";
-        cout << "1. Add Book\n";
-        cout << "2. Display Books\n";
-        cout << "3. Issue Book\n";
-        cout << "4. Return Book\n";
-        cout << "5. Exit\n";
+      cout << "\n--- Library Management System ---\n";
+cout << "1. Add Book\n";
+cout << "2. Display Books\n";
+cout << "3. Issue Book\n";
+cout << "4. Return Book\n";
+cout << "5. Search Book\n";
+cout << "6. Exit\n";
 
         cout << "Enter choice: ";
         cin >> choice;
@@ -134,8 +150,12 @@ int main() {
             lib.returnBook();
             break;
         case 5:
-            return 0;
-        default:
+            lib.searchBook();
+            break;
+        case 6:
+            cout<<"Exiting...\n";
+       return 0;
+             default:
             cout << "Invalid choice\n";
         }
     }
